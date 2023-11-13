@@ -56,4 +56,5 @@ fn create_character() -> Character
         let temp_attack_points:i16 = 10;
         let temp_health_points:i16 = 50;
 
-        println!(" abcd, remaining_points);
+        println!(" abcd, remaining_points");
+    }
