@@ -1,53 +1,66 @@
-use clearscreen::clear;
-use regex::Regex;
-use std::io::{stdout, Write};
-use std::process::exit;
-use std::thread;
-use std::time::Duration;
-use std::{io, println};
+use std::io;
 
-const GAME_FILE_LOCATION: &str = "./game_file.ron";
-
-pub mod game_lib;
-
-fn main() {
-    let world_result = init_game(GAME_FILE_LOCATION);
-
-    match world_result {
-        Ok(world) => {
-            // Here we will run the game
-            do_game(world);
-        }
-        Err(file_err) => {
-            println!("Error: {}", file_err);
-        }
-    }
-}
-fn init_game(file_location: &str) -> Result<game_lib::World, std::io::Error> {
-    //Here we will read the file and return the world we created.
-
-    game_lib::World::read_from_file(file_location)
+struct Character
+{
+    name: String,
+    health: i16,
+    attack: i16,
+    defense: i16,
 }
 
-fn do_game(mut world: game_lib::World) {
-    clear().expect("Failed to clear screen");
-    println!("Hello, Player!\n");
-    println!("Welcome to Rust In Peace\n");
-    println!("Would you like to start the game? (Y/N)");
-    let mut answer = String::new();
-    io::stdin()
-        .read_line(&mut answer)
-        .expect("Failed to read input");
-    let no = Regex::new("[nN]|[nN][oO]").unwrap();
-    if no.is_match(answer.trim()) {
-        println!("Goodbye!");
-        std::process::exit(0);
+impl Character
+{
+    fn temporary_buff(&mut self, buff_param: i16, attribute_param: i16) -> i16
+    {
+            buff_param * attribute_param
     }
-    clear().expect("Failed to clear screen");
+}
 
-    let message="You find yourself lost in a gloomy forest. You see a column of smoke rising in the sky. It seems to be very far away.\n";
-    for c in message.chars() {
-        print!("{}", c);
-        stdout().flush().unwrap(); // Flush the output to make it appear immediately
-        thread::sleep(Duration::from_millis(25)); // Delay between characters
-    }
+fn main()
+{
+    let mut valnir_reaper = Character
+    {
+        name: "Valnir the Reaper".to_string(),
+        attack: 27,
+        defense: 21,
+        health: 150,
+    };
+
+    let mut player_char = create_character();
+    println!("Name: {}\nHealth: {}\nAttack: {}\nDefense: {}",
+    player_char.name, player_char.health, player_char.attack, player_char.defense);
+
+    battle(&mut player_char, &mut valnir_reaper);
+}
+
+fn create_character() -> Character
+{
+    let mut output_character = Character
+    {
+        name: "a_name".to_string(),
+        attack: 0,
+        defense: 0,
+        health: 0,
+    };
+
+    let mut player_char = String::new();
+    println!("Type in the name of your character that will do battle against the enemy!");
+    io::stdin().read_line(&mut player_char).expect("Failed to get input.");
+    player_char = player_char.trim().to_string();
+    output_character.name = player_char.clone();
+
+    loop
+    {
+        let mut remaining_points:i16 = 50;
+        let temp_defense_points:i16 = 10;
+        let temp_attack_points:i16 = 10;
+        let temp_health_points:i16 = 50;
+
+        println!("Now it's time to put points in your character!\n===========\nYou have {} points to distribute across your \
+        character's health points, attack and defense.\n===========\nYou start with 10 points in attack, 10 in defense and 50 \
+        in health; the other 50 points will be added according to your choice\n===========\nHowever, you will first be prompted \
+        to put points into your character's attack and defense, while the remaining points will be multiplied by 10 and added to \
+        your character's health points.", remaining_points);
+
+        println!("You have {} points to distribute across your character's health points, attack and defense.", 
+        remaining_points);
