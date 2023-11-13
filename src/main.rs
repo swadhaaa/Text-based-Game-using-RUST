@@ -56,11 +56,4 @@ fn create_character() -> Character
         let temp_attack_points:i16 = 10;
         let temp_health_points:i16 = 50;
 
-        println!("Now it's time to put points in your character!\n===========\nYou have {} points to distribute across your \
-        character's health points, attack and defense.\n===========\nYou start with 10 points in attack, 10 in defense and 50 \
-        in health; the other 50 points will be added according to your choice\n===========\nHowever, you will first be prompted \
-        to put points into your character's attack and defense, while the remaining points will be multiplied by 10 and added to \
-        your character's health points.", remaining_points);
-
-        println!("You have {} points to distribute across your character's health points, attack and defense.", 
-        remaining_points);
+        println!(" abcd, remaining_points);
